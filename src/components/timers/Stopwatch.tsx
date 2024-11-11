@@ -1,28 +1,29 @@
-import { useState, useRef } from "react";
-import { milisecondsToTime } from "../../utils/helpers";
-import { onPauseStandard, 
-         onStartForwardStandard,
-         onStopStandard } from "../generic/TimerFunctionsUtil.tsx";
-import { TimerButton, 
-         TimerDisplay,
-         ControlsDiv } from "../generic/TimerComps.tsx";
+import { useEffect, useRef, useState } from 'react';
+import { milisecondsToTime } from '../../utils/helpers';
+import { ControlsDiv, TimerButton, TimerDisplay } from '../generic/TimerComps.tsx';
+import { onStartForwardStandard, onStopStopwatch } from '../generic/TimerFunctionsUtil.tsx';
 type StopwatchProps = {
+    timeLimit?: number;
     refreshRate?: number;
 };
 
-const Stopwatch = ({refreshRate = 1000}: StopwatchProps) => {
-
+const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000 }: StopwatchProps) => {
     const [time, setTime] = useState<number>(0);
     const status = useRef('stop');
     const intervalRef = useRef<number | undefined>(undefined);
+
+    useEffect(() => {
+        if (time > timeLimit) {
+            onStopStopwatch(status, intervalRef, setTime);
+        }
+    }, [time, timeLimit]);
 
     return (
         <div>
             <TimerDisplay value={milisecondsToTime(time)} />
             <ControlsDiv>
-                <TimerButton onClickParam={() => onStartForwardStandard(status, intervalRef, refreshRate, setTime)} timerButtonLabel="▶️" />
-                <TimerButton onClickParam={() => onPauseStandard(status, intervalRef)} timerButtonLabel="⏸️" />
-                <TimerButton onClickParam={() => onStopStandard(status, intervalRef, setTime)} timerButtonLabel="⏹️" />                   
+                <TimerButton onClickParam={() => onStartForwardStandard(status, intervalRef, refreshRate, setTime)} timerButtonLabel="⏯️" />
+                <TimerButton onClickParam={() => onStopStopwatch(status, intervalRef, setTime)} timerButtonLabel="⏹️" />
             </ControlsDiv>
         </div>
     );

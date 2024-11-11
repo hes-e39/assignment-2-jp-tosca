@@ -1,19 +1,13 @@
 import type { MutableRefObject } from 'react';
 
 /*
- * On Pause functions
- */
-export const onPauseStandard = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>) => {
-    status.current = 'pause';
-    clearInterval(intervalRef.current);
-};
-
-/*
  * On Start functions
  */
 
 const onStartStandard = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>, refreshRate: number, setTime: React.Dispatch<React.SetStateAction<number>>) => {
     if (status.current === 'start') {
+        status.current = 'pause';
+        clearInterval(intervalRef.current);
         return;
     }
 
@@ -54,6 +48,8 @@ export const onStartIntervalsStandard = (
     setRounds: React.Dispatch<React.SetStateAction<number>>,
 ) => {
     if (status.current === 'start') {
+        status.current = 'pause';
+        clearInterval(intervalRef.current);
         return;
     }
 
@@ -89,6 +85,8 @@ export const onStartIntervalsWorkRest = (
     setRounds: React.Dispatch<React.SetStateAction<number>>,
 ) => {
     if (status.current === 'start') {
+        status.current = 'pause';
+        clearInterval(intervalRef.current);
         return;
     }
 
@@ -123,10 +121,18 @@ export const onStartIntervalsWorkRest = (
  * On Stop functions
  */
 
-export const onStopStandard = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>, setTime: React.Dispatch<React.SetStateAction<number>>) => {
+export const onStopStandard = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>, setTime: React.Dispatch<React.SetStateAction<number>>, time: number) => {
     status.current = 'stop';
-    setTime(0);
+    setTime(time);
     clearInterval(intervalRef.current);
+};
+
+export const onStopCountdown = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>, setTime: React.Dispatch<React.SetStateAction<number>>, time: number) => {
+    onStopStandard(status, intervalRef, setTime, time);
+};
+
+export const onStopStopwatch = (status: MutableRefObject<string>, intervalRef: MutableRefObject<number | undefined>, setTime: React.Dispatch<React.SetStateAction<number>>) => {
+    onStopStandard(status, intervalRef, setTime, 0);
 };
 
 export const onStopInterval = (
