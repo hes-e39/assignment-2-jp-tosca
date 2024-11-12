@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { useState } from 'react';
 import Countdown from '../components/timers/Countdown';
 import Stopwatch from '../components/timers/Stopwatch';
 import Tabata from '../components/timers/Tabata';
@@ -31,22 +32,26 @@ const TimerTitle = styled.div`
 `;
 
 const TimersView = () => {
-    const timers = [
+    const [timers, setTimers] = useState([
         { title: 'Stopwatch', C: <Stopwatch /> },
         { title: 'Countdown', C: <Countdown initTime={2000} /> },
         { title: 'XY', C: <XY /> },
         { title: 'Tabata', C: <Tabata /> },
-    ];
+    ]);
 
     return (
-        <Timers>
-            {timers.map(timer => (
-                <Timer key={`timer-${timer.title}`}>
-                    <TimerTitle>{timer.title}</TimerTitle>
-                    {timer.C}
-                </Timer>
-            ))}
-        </Timers>
+        <>
+            <Timers>
+                {timers.map(timer => (
+                    <Timer key={`timer-${timer.title}`}>
+                        <TimerTitle>{timer.title}</TimerTitle>
+                        {timer.C}
+                    </Timer>
+                ))}
+            </Timers>
+            <button onClick={() => setTimers([...timers, { title: 'New Timer', C: <Countdown initTime={2000} /> }])}>ADD+</button>
+            <button onClick={() => setTimers(timers.slice(0, timers.length - 1))}>REMOVE-</button>
+        </>
     );
 };
 

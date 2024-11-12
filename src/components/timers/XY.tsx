@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { milisecondsToTime } from '../../utils/helpers';
-import { ControlsDiv, TimerButton, TimerDisplay } from '../generic/TimerComps.tsx';
-import { onStartIntervalsStandard, onStopInterval } from '../generic/TimerFunctionsUtil.tsx';
+import { TimerDisplay } from '../generic/TimerComps.tsx';
 
 type XYProps = {
     initTime?: number;
@@ -19,10 +18,10 @@ const XY = ({ initTime = 5000, initRounds = 2, refreshRate = 1000 }: XYProps) =>
         <div>
             <TimerDisplay value={rounds.toString()} label={'Rounds'} />
             <TimerDisplay value={milisecondsToTime(time)} />
-            <ControlsDiv>
+            {/* <ControlsDiv>
                 <TimerButton onClickParam={() => onStartIntervalsStandard(status, intervalRef, refreshRate, initTime, initRounds, setTime, setRounds)} timerButtonLabel="⏯️" />
                 <TimerButton onClickParam={() => onStopInterval(status, intervalRef, initTime, initRounds, setTime, setRounds)} timerButtonLabel="⏹️" />
-            </ControlsDiv>
+            </ControlsDiv> */}
         </div>
     );
 };

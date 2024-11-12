@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { milisecondsToTime } from '../../utils/helpers';
-import { ControlsDiv, TimerButton, TimerDisplay } from '../generic/TimerComps.tsx';
-import { onStartForwardStandard, onStopStopwatch } from '../generic/TimerFunctionsUtil.tsx';
+import { TimerDisplay } from '../generic/TimerComps.tsx';
+import { onStopStopwatch } from '../generic/TimerFunctionsUtil.tsx';
 type StopwatchProps = {
     timeLimit?: number;
     refreshRate?: number;
@@ -21,10 +21,10 @@ const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000 }: StopwatchProps) =>
     return (
         <div>
             <TimerDisplay value={milisecondsToTime(time)} />
-            <ControlsDiv>
+            {/* <ControlsDiv>
                 <TimerButton onClickParam={() => onStartForwardStandard(status, intervalRef, refreshRate, setTime)} timerButtonLabel="⏯️" />
                 <TimerButton onClickParam={() => onStopStopwatch(status, intervalRef, setTime)} timerButtonLabel="⏹️" />
-            </ControlsDiv>
+            </ControlsDiv> */}
         </div>
     );
 };
