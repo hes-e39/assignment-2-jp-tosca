@@ -1,32 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
-import { TimerDisplay } from '../generic/TimerComps.tsx';
-import { onStopCountdown } from '../generic/TimerFunctionsUtil.tsx';
+import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
+import useCountdown from '../hooks/useCountdown.tsx';
 
 type CountdownProps = {
-    initTime?: number;
+    countdownDuration?: number;
     refreshRate?: number;
+    id: string;
 };
 
-const Countdown = ({ initTime = 5000, refreshRate = 1000 }: CountdownProps) => {
-    const [time, setTime] = useState<number>(initTime);
-    const status = useRef('stop');
-    const intervalRef = useRef<number | undefined>(undefined);
-
-    useEffect(() => {
-        if (time < 0) {
-            onStopCountdown(status, intervalRef, setTime, initTime);
-        }
-    }, [time, initTime]);
+const Countdown = ({ countdownDuration = 5000, refreshRate = 1000, id }: CountdownProps) => {
+    const { time, setTime, status, intervalRef } = useCountdown(countdownDuration);
 
     return (
-        <div>
+        <Timer>
+            <TimerTitle>
+                <RemoveButton removeId={id} />
+                Countdown
+            </TimerTitle>
             <TimerDisplay value={milisecondsToTime(time)} />
-            {/* <ControlsDiv>
-                <TimerButton onClickParam={() => onStartBackwardStandard(status, intervalRef, refreshRate, setTime)} timerButtonLabel="⏯️" />
-                <TimerButton onClickParam={() => onStopCountdown(status, intervalRef, setTime, initTime)} timerButtonLabel="⏹️" />
-            </ControlsDiv> */}
-        </div>
+        </Timer>
     );
 };
 

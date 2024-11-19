@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
-import { TimerDisplay } from '../generic/TimerComps.tsx';
+import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
 import { onStopStopwatch } from '../generic/TimerFunctionsUtil.tsx';
 type StopwatchProps = {
     timeLimit?: number;
     refreshRate?: number;
+    id: string;
 };
 
-const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000 }: StopwatchProps) => {
+const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000, id }: StopwatchProps) => {
     const [time, setTime] = useState<number>(0);
     const status = useRef('stop');
     const intervalRef = useRef<number | undefined>(undefined);
@@ -19,13 +21,13 @@ const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000 }: StopwatchProps) =>
     }, [time, timeLimit]);
 
     return (
-        <div>
+        <Timer>
+            <TimerTitle>
+                <RemoveButton removeId={id} />
+                Stopwatch
+            </TimerTitle>
             <TimerDisplay value={milisecondsToTime(time)} />
-            {/* <ControlsDiv>
-                <TimerButton onClickParam={() => onStartForwardStandard(status, intervalRef, refreshRate, setTime)} timerButtonLabel="⏯️" />
-                <TimerButton onClickParam={() => onStopStopwatch(status, intervalRef, setTime)} timerButtonLabel="⏹️" />
-            </ControlsDiv> */}
-        </div>
+        </Timer>
     );
 };
 

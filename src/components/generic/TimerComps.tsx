@@ -1,4 +1,12 @@
-import { useState } from 'react';
+import { type ReactElement, useContext } from 'react';
+import { RemoveButtonStyle } from '../../utils/Styled';
+import { TimersContext } from '../context/TimersContextProvider';
+
+export type TimerComponent = {
+    title: string;
+    C: ReactElement;
+    status?: string;
+};
 
 type TimerButtonProps = {
     onClickParam: () => void;
@@ -31,10 +39,11 @@ type selectTimerProps = {
     timerTypes: {
         title: string;
     }[];
+    selected: number;
+    setSelected: (value: number) => void;
 };
 
-export const TimerTypeSelect = ({ timerTypes }: selectTimerProps) => {
-    const [selected, setSelected] = useState(0);
+export const TimerTypeSelect = ({ timerTypes, selected, setSelected }: selectTimerProps) => {
     return (
         <select
             className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
@@ -50,4 +59,112 @@ export const TimerTypeSelect = ({ timerTypes }: selectTimerProps) => {
             ))}
         </select>
     );
+};
+
+type TimerInputProps = {
+    setDuration: (value: number) => void;
+    label: string;
+};
+
+export const TimerInput = ({ setDuration, label }: TimerInputProps) => {
+    return (
+        <div>
+            <input
+                type="number"
+                max={84400000}
+                min={1000}
+                placeholder={label}
+                onChange={event => {
+                    setDuration(Number.parseInt(event.target.value));
+                }}
+            />
+        </div>
+    );
+};
+
+type XYTimerInputProps = {
+    setDuration: (value: number) => void;
+    setRounds: (value: number) => void;
+    labelDuration?: string;
+    labelRounds?: string;
+};
+
+export const XYTimerInput = ({ setDuration, setRounds, labelDuration = 'Round Duration (MS)', labelRounds = 'Rounds' }: XYTimerInputProps) => {
+    return (
+        <div>
+            <input
+                type="number"
+                max={84400000}
+                min={1000}
+                placeholder={labelDuration}
+                onChange={event => {
+                    setDuration(Number.parseInt(event.target.value));
+                }}
+            />
+            <input
+                type="number"
+                max={100}
+                min={1}
+                placeholder={labelRounds}
+                onChange={event => {
+                    setRounds(Number.parseInt(event.target.value));
+                }}
+            />
+        </div>
+    );
+};
+
+type TabataTimerInputProps = {
+    setDuration: (value: number) => void;
+    setRestDuration: (value: number) => void;
+    setRounds: (value: number) => void;
+    labelDuration?: string;
+    labelRestDuration?: string;
+    labelRounds?: string;
+};
+
+export const TabataTimerInput = ({
+    setDuration,
+    setRounds,
+    setRestDuration,
+    labelDuration = 'Active Duration',
+    labelRestDuration = 'Rest Duration',
+    labelRounds = 'Rounds',
+}: TabataTimerInputProps) => {
+    return (
+        <div>
+            <input
+                type="number"
+                max={84400000}
+                min={1000}
+                placeholder={labelDuration}
+                onChange={event => {
+                    setDuration(Number.parseInt(event.target.value));
+                }}
+            />
+            <input
+                type="number"
+                max={84400000}
+                min={1000}
+                placeholder={labelRestDuration}
+                onChange={event => {
+                    setRestDuration(Number.parseInt(event.target.value));
+                }}
+            />
+            <input
+                type="number"
+                max={100}
+                min={1}
+                placeholder={labelRounds}
+                onChange={event => {
+                    setRounds(Number.parseInt(event.target.value));
+                }}
+            />
+        </div>
+    );
+};
+
+export const RemoveButton = ({ removeId }: { removeId: string }) => {
+    const timersContext = useContext(TimersContext);
+    return <RemoveButtonStyle onClick={() => timersContext.deleteTimer(removeId)}>❌</RemoveButtonStyle>;
 };

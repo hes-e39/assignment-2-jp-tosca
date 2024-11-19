@@ -1,56 +1,44 @@
-import styled from 'styled-components';
-
-import { useState } from 'react';
+import { useContext } from 'react';
+import { TimersContext } from '../components/context/TimersContextProvider';
+import { ControlsDiv, TimerButton } from '../components/generic/TimerComps';
 import Countdown from '../components/timers/Countdown';
 import Stopwatch from '../components/timers/Stopwatch';
 import Tabata from '../components/timers/Tabata';
 import XY from '../components/timers/XY';
-
-const Timers = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Timer = styled.div`
-  border: 1px solid gray;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 10px;
-  font-size: 1.5rem;
-  width: 95%;
-`;
-
-const TimerTitle = styled.div`
-  font-weight: bold;
-  text-align: right;
-  padding-right: 15px;
-  color: white;
-  border-radius: 10px 10px 0px 0px;
-  background-color: #314155;
-`;
+import { Timers } from '../utils/Styled';
 
 const TimersView = () => {
-    const [timers, setTimers] = useState([
-        { title: 'Stopwatch', C: <Stopwatch /> },
-        { title: 'Countdown', C: <Countdown initTime={2000} /> },
-        { title: 'XY', C: <XY /> },
-        { title: 'Tabata', C: <Tabata /> },
-    ]);
+    const timersContext = useContext(TimersContext);
 
     return (
         <>
             <Timers>
-                {timers.map(timer => (
-                    <Timer key={`timer-${timer.title}`}>
-                        <TimerTitle>{timer.title}</TimerTitle>
-                        {timer.C}
-                    </Timer>
+                {timersContext.timers.map(timer => (
+                    <div key={timer.id}>
+                        {timer.type === 'Countdown' ? (
+                            <Countdown id={timer.id} countdownDuration={timer.duration} />
+                        ) : timer.type === 'Stopwatch' ? (
+                            <Stopwatch id={timer.id} timeLimit={timer.duration} />
+                        ) : timer.type === 'XY' ? (
+                            <XY id={timer.id} rounds={timer.rounds} roundDuration={timer.duration} />
+                        ) : timer.type === 'Tabata' ? (
+                            <Tabata id={timer.id} rounds={timer.rounds} duration={timer.duration} restDuration={timer.restDuration} />
+                        ) : null}
+                    </div>
                 ))}
             </Timers>
-            <button onClick={() => setTimers([...timers, { title: 'New Timer', C: <Countdown initTime={2000} /> }])}>ADD+</button>
-            <button onClick={() => setTimers(timers.slice(0, timers.length - 1))}>REMOVE-</button>
+            <ControlsDiv>
+                <TimerButton
+                    onClickParam={() => {
+                        timersContext.timers.map(timer => {
+                            //console.log(timer);
+                        });
+                    }}
+                    timerButtonLabel="⏯️"
+                />
+                <TimerButton onClickParam={() => {}} timerButtonLabel="⏹️" />
+                <TimerButton onClickParam={() => {}} timerButtonLabel="⏩" />
+            </ControlsDiv>
         </>
     );
 };
