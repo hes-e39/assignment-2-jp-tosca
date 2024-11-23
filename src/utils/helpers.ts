@@ -10,3 +10,20 @@ export function milisecondsToTime(miliseconds: number): string {
     return formattedTime;
 }
 
+export function calculateRoundsVal(rounds: number, type: string): number | undefined {
+    const defaultValue = 3;
+    if (type === 'Stopwatch' || type === 'Countdown') {
+        return undefined;
+    } else if (type === 'Tabata') {
+        return rounds === 0 ? defaultValue * 2 : rounds * 2;
+    }
+    return rounds === 0 ? defaultValue : rounds;
+}
+
+export function calculateRestDurationVal(restDuration: number, type: string): number | undefined {
+    const defaultValue = 2000;
+    if (type !== 'Tabata') {
+        return undefined;
+    }
+    return restDuration === 0 ? defaultValue : restDuration;
+}

@@ -2,7 +2,6 @@ import { type MutableRefObject, createContext, useRef, useState } from 'react';
 
 export type Timer = {
     id: string;
-    title: string;
     status: string;
     type: string;
     initialDuration: number;
@@ -18,7 +17,6 @@ export type TimersContextType = {
     running: Timer | Partial<Timer> | null;
     setRunning: (timer: Timer | Partial<Timer> | null) => void;
     createTimer: (timer: {
-        title: string;
         status?: string;
         type: string;
         duration: number;
@@ -39,7 +37,6 @@ export const TimersContext = createContext<TimersContextType>({
     running: null,
     createTimer: () => ({
         id: '',
-        title: '',
         status: '',
         type: '',
         duration: 0,
@@ -63,10 +60,9 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
                 timers,
                 running,
                 setRunning,
-                createTimer: ({ title, type, duration, initialDuration, rounds, initialRounds, restDuration, initialRestDuration }) => {
+                createTimer: ({ type, duration, initialDuration, rounds, initialRounds, restDuration, initialRestDuration }) => {
                     const newTimer = {
                         id: `${Date.now()}`,
-                        title,
                         status: 'stopped',
                         type,
                         duration,

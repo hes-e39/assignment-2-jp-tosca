@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
 import { TimersContext } from '../context/TimersContextProvider.tsx';
-import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
+import { RemoveButton, TimeDisplay } from '../generic/TimerComps.tsx';
 
 type CountdownProps = {
     id: string;
@@ -17,7 +17,7 @@ const Countdown = ({ id }: CountdownProps) => {
                 <RemoveButton removeId={id} />
                 Countdown
             </TimerTitle>
-            <TimerDisplay value={milisecondsToTime(t?.duration || 0)} />
+            <TimeDisplay value={milisecondsToTime(t?.duration || 0)} />
         </Timer>
     );
 };

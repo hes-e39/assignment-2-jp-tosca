@@ -59,8 +59,9 @@ export const TimeInput = styled.input`
   background-color: #f0f0f0;
   border: 1px solid gray;
   border-radius: 5px;
-  
-  text-align: center;
-  width: 50px;
+  padding: 5px;
+  text-align: left;
+  width: 150px;
   margin: 5px;
+  
 `;
