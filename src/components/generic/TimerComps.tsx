@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { RemoveButtonStyle, TimeInput } from '../../utils/Styled';
+import { RemoveButtonStyle } from '../../utils/Styled';
 import { type Timer, TimersContext } from '../context/TimersContextProvider';
 import Countdown from '../timers/Countdown';
 import Stopwatch from '../timers/Stopwatch';
@@ -16,7 +16,7 @@ type TimeDisplayProps = {
 
 export const TimeDisplay = ({ value, label }: TimeDisplayProps) => {
     return (
-        <h1 className="text-4xl font-bold text-center p-4">
+        <h1 className="text-2xl font text-center p-1">
             {label !== undefined ? `${label}: ` : ''}
             {value}
         </h1>
@@ -42,7 +42,8 @@ export const TimerButton = ({ onClickParam, timerButtonLabel }: TimerButtonProps
  * Component for the controllers of the workout.
  */
 export const ControlsDiv = ({ children }: { children: React.ReactNode }) => {
-    return <div className="flex justify-center space-x-4 text-6xl p-5">{children}</div>;
+    // mx-auto px-6 py-3 flex items-center
+    return <div className="bg-gray-800 absolute bottom-0 right-0 left-0 flex justify-center space-x-4 text-6xl p-5 ">{children}</div>;
 };
 
 /**
@@ -61,8 +62,8 @@ type selectTimerProps = {
  */
 export const TimerTypeSelect = ({ timerTypes, selected, setSelected }: selectTimerProps) => {
     return (
-        <div>
-            <label htmlFor="timerType" className="px-4">
+        <div className="w-64">
+            <label htmlFor="timerType" className="px-4 font-bold">
                 Timer Type
             </label>
             <select
@@ -83,6 +84,46 @@ export const TimerTypeSelect = ({ timerTypes, selected, setSelected }: selectTim
     );
 };
 
+export const TimerInputsContainer = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div className="flex flex-wrap w-full">
+            <div className="w-full">{children}</div>
+        </div>
+    );
+};
+
+export type TimerInputComponentProps = {
+    label: string;
+    id: string;
+    defaultValue: number;
+    min: number;
+    max: number;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const TimerInputComponent = ({ label, id, defaultValue, min, max, onChange }: TimerInputComponentProps) => {
+    return (
+        <>
+            <div className="flex items-center ">
+                <label className="text-white font-bold mb-1 md:mb-0 whitespace-nowrap mr-2" htmlFor={id}>
+                    {label}
+                </label>
+            </div>
+            <div className="flex items-center col-span-3 w-64">
+                <input
+                    className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-800"
+                    id={id}
+                    type="number"
+                    defaultValue={defaultValue}
+                    min={min}
+                    max={max}
+                    onChange={onChange}
+                />
+            </div>
+        </>
+    );
+};
+
 /**
  * Props for the TimerInput component.
  */
@@ -96,20 +137,18 @@ type TimerInputProps = {
  */
 export const TimerInput = ({ setDuration, label }: TimerInputProps) => {
     return (
-        <div>
-            <label htmlFor="timeInput">{label}</label>
-            <TimeInput
+        <TimerInputsContainer>
+            <TimerInputComponent
+                label={label}
                 id="timeInput"
-                type="number"
-                max={84400000}
                 min={1000}
-                placeholder={label}
+                max={84400000}
                 defaultValue={3000}
                 onChange={event => {
                     setDuration(Number.parseInt(event.target.value));
                 }}
             />
-        </div>
+        </TimerInputsContainer>
     );
 };
 
@@ -128,36 +167,28 @@ type XYTimerInputProps = {
  */
 export const XYTimerInput = ({ setDuration, setRounds, labelDuration = 'Round Duration (MS)', labelRounds = 'Rounds' }: XYTimerInputProps) => {
     return (
-        <div>
-            <div>
-                <label htmlFor="timeInput">{labelDuration}</label>
-                <TimeInput
-                    id="timeInput"
-                    type="number"
-                    max={84400000}
-                    min={1000}
-                    defaultValue={3000}
-                    placeholder={labelDuration}
-                    onChange={event => {
-                        setDuration(Number.parseInt(event.target.value));
-                    }}
-                />
-            </div>
-            <div>
-                <label htmlFor="roundsInput">{labelRounds}</label>
-                <TimeInput
-                    id="roundsInput"
-                    type="number"
-                    max={100}
-                    min={1}
-                    defaultValue={3}
-                    placeholder={labelRounds}
-                    onChange={event => {
-                        setRounds(Number.parseInt(event.target.value));
-                    }}
-                />
-            </div>
-        </div>
+        <TimerInputsContainer>
+            <TimerInputComponent
+                label={labelDuration}
+                id="timeInput"
+                min={1000}
+                max={84400000}
+                defaultValue={3000}
+                onChange={event => {
+                    setDuration(Number.parseInt(event.target.value));
+                }}
+            />
+            <TimerInputComponent
+                label={labelRounds}
+                id="roundsInput"
+                min={1}
+                max={100}
+                defaultValue={3}
+                onChange={event => {
+                    setRounds(Number.parseInt(event.target.value));
+                }}
+            />
+        </TimerInputsContainer>
     );
 };
 
@@ -185,46 +216,38 @@ export const TabataTimerInput = ({
     labelRounds = 'Rounds',
 }: TabataTimerInputProps) => {
     return (
-        <div>
-            <label htmlFor="timeInput">{labelDuration}</label>
-            <TimeInput
+        <TimerInputsContainer>
+            <TimerInputComponent
+                label={labelDuration}
                 id="timeInput"
-                type="number"
-                max={84400000}
                 min={1000}
+                max={84400000}
                 defaultValue={3000}
-                placeholder={labelDuration}
                 onChange={event => {
                     setDuration(Number.parseInt(event.target.value));
                 }}
             />
-            <br />
-            <label htmlFor="restInput">{labelRestDuration}</label>
-            <TimeInput
+            <TimerInputComponent
+                label={labelRestDuration}
                 id="restInput"
-                type="number"
-                max={84400000}
                 min={1000}
+                max={84400000}
                 defaultValue={2000}
-                placeholder={labelRestDuration}
                 onChange={event => {
                     setRestDuration(Number.parseInt(event.target.value));
                 }}
             />
-            <br />
-            <label htmlFor="roundsInput">{labelRounds}</label>
-            <TimeInput
+            <TimerInputComponent
+                label={labelRounds}
                 id="roundsInput"
-                type="number"
-                max={100}
                 min={1}
+                max={100}
                 defaultValue={3}
-                placeholder={labelRounds}
                 onChange={event => {
                     setRounds(Number.parseInt(event.target.value));
                 }}
             />
-        </div>
+        </TimerInputsContainer>
     );
 };
 

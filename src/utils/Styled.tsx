@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const AddViewDiv = styled.div`
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,12 +26,6 @@ export const TimerTitle = styled.div`
   background-color: #314155;
 `;
 
-export const Timers = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
 export const Timer = styled.div`
   border: 1px solid gray;
   background-color: #f0f0f0;
@@ -39,6 +34,7 @@ export const Timer = styled.div`
   margin: 10px;
   font-size: 1.5rem;
   width: 95%;
+  height: 220px;
 `;
 
 export const RemoveButtonStyle = styled.button`
@@ -53,15 +49,4 @@ export const RemoveButtonStyle = styled.button`
   &:hover {
     background-color: white;
   }
-`;
-
-export const TimeInput = styled.input`
-  background-color: #f0f0f0;
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 5px;
-  text-align: left;
-  width: 150px;
-  margin: 5px;
-  
 `;

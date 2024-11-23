@@ -11,14 +11,14 @@ type XYProps = {
 const XY = ({ id }: XYProps) => {
     const timersContext = useContext(TimersContext);
     const t = timersContext.timers.find(timer => timer.id === id);
-
+    const roundsValue = `${t?.rounds?.toString()}/${t?.initialRounds}`;
     return (
         <Timer>
             <TimerTitle>
                 <RemoveButton removeId={id} />
                 XY Timer
             </TimerTitle>
-            <TimeDisplay value={`${t?.rounds?.toString()}/${t?.initialRounds}`} label={'Rounds'} />
+            <TimeDisplay value={roundsValue} label={'Rounds'} />
             <TimeDisplay value={milisecondsToTime(t?.duration || 0)} />
         </Timer>
     );

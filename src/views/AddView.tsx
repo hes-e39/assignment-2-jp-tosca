@@ -26,14 +26,14 @@ const AddView = () => {
     ];
 
     return (
-        <AddViewDiv>
+        <AddViewDiv className="bg-slate-500 fixed bottom-0 left-0 right-0 top-16">
             <br />
             <TimerTypeSelect timerTypes={timerTypes} selected={selected} setSelected={setSelected} />
             <br />
             <div>{timerTypes[selected].C}</div>
             <br />
             <Link
-                className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                className="bg-gray-900 text-white rounded-md p-3 font-medium w-64 text-center"
                 onClick={() => {
                     //These values are calculated diferently depending on the timer type
                     const durationVal = timerTypes[selected].title === 'Stopwatch' ? 0 : duration;
