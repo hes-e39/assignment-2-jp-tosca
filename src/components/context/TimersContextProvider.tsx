@@ -1,4 +1,5 @@
 import { type MutableRefObject, createContext, useRef, useState } from 'react';
+import { stopWorkout } from '../../utils/helpers';
 
 export type Timer = {
     id: string;
@@ -85,17 +86,7 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
 
                                 //If no timer is left to run we restart the workout.
                                 if (timerIndex === -1) {
-                                    setTimers(prevTimers =>
-                                        prevTimers.map(timer => ({
-                                            ...timer,
-                                            status: 'stopped',
-                                            duration: timer.initialDuration,
-                                            restDuration: timer.initialRestDuration,
-                                            rounds: timer.initialRounds,
-                                        })),
-                                    );
-                                    clearInterval(intervalRef.current);
-                                    setRunning(null);
+                                    stopWorkout(setTimers, intervalRef, setRunning);
                                     return prevTimers;
                                 }
 
@@ -138,17 +129,7 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
                 },
                 stopWorkout: () => {
                     if (running !== null) {
-                        setTimers(prevTimers =>
-                            prevTimers.map(timer => ({
-                                ...timer,
-                                status: 'stopped',
-                                duration: timer.type === 'Stopwatch' ? 0 : timer.initialDuration,
-                                restDuration: timer.initialRestDuration,
-                                rounds: timer.initialRounds,
-                            })),
-                        );
-                        clearInterval(intervalRef.current);
-                        setRunning(null);
+                        stopWorkout(setTimers, intervalRef, setRunning);
                     }
                 },
                 fastForward: () => {

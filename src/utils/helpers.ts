@@ -1,5 +1,8 @@
 // Add helpers here. This is usually code that is just JS and not React code. Example: write a function that
 // calculates number of minutes when passed in seconds. Things of this nature that you don't want to copy/paste
+
+import type { Timer } from '../components/context/TimersContextProvider';
+
 // everywhere.
 export function milisecondsToTime(miliseconds: number): string {
     const seconds = Math.floor((miliseconds / 1000) % 60);
@@ -26,4 +29,23 @@ export function calculateRestDurationVal(restDuration: number, type: string): nu
         return undefined;
     }
     return restDuration === 0 ? defaultValue : restDuration;
+}
+
+export function stopWorkout(
+    setTimers: React.Dispatch<React.SetStateAction<Timer[]>>,
+    intervalRef: React.MutableRefObject<number | undefined>,
+    setRunning: React.Dispatch<React.SetStateAction<Timer | Partial<Timer> | null>>,
+): void {
+    setTimers(prevTimers =>
+        prevTimers.map(timer => ({
+            ...timer,
+            status: 'stopped',
+            duration: timer.type === 'Stopwatch' ? 0 : timer.initialDuration,
+            restDuration: timer.initialRestDuration,
+            rounds: timer.initialRounds,
+        })),
+    );
+
+    clearInterval(intervalRef.current);
+    setRunning(null);
 }
