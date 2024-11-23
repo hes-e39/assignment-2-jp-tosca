@@ -1,24 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
+import { TimersContext } from '../context/TimersContextProvider.tsx';
 import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
-import { onStopStopwatch } from '../generic/TimerFunctionsUtil.tsx';
+
 type StopwatchProps = {
-    timeLimit?: number;
-    refreshRate?: number;
     id: string;
 };
 
-const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000, id }: StopwatchProps) => {
-    const [time, setTime] = useState<number>(0);
-    const status = useRef('stop');
-    const intervalRef = useRef<number | undefined>(undefined);
-
-    useEffect(() => {
-        if (time > timeLimit) {
-            onStopStopwatch(status, intervalRef, setTime);
-        }
-    }, [time, timeLimit]);
+const Stopwatch = ({ id }: StopwatchProps) => {
+    const timersContext = useContext(TimersContext);
+    const t = timersContext.timers.find(timer => timer.id === id);
 
     return (
         <Timer>
@@ -26,7 +18,7 @@ const Stopwatch = ({ timeLimit = 10000, refreshRate = 1000, id }: StopwatchProps
                 <RemoveButton removeId={id} />
                 Stopwatch
             </TimerTitle>
-            <TimerDisplay value={milisecondsToTime(time)} />
+            <TimerDisplay value={milisecondsToTime(t?.duration || 0)} />
         </Timer>
     );
 };

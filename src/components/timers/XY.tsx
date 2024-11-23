@@ -1,20 +1,16 @@
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
 import { TimersContext } from '../context/TimersContextProvider.tsx';
 import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
 
 type XYProps = {
-    roundDuration?: number;
-    rounds?: number;
-    refreshRate?: number;
     id: string;
 };
 
-const XY = ({ roundDuration = 5000, rounds = 2, refreshRate = 1000, id }: XYProps) => {
-    const status = useRef('stop');
-    const intervalRef = useRef<number | undefined>(undefined);
+const XY = ({ id }: XYProps) => {
     const timersContext = useContext(TimersContext);
+    const t = timersContext.timers.find(timer => timer.id === id);
 
     return (
         <Timer>
@@ -22,9 +18,8 @@ const XY = ({ roundDuration = 5000, rounds = 2, refreshRate = 1000, id }: XYProp
                 <RemoveButton removeId={id} />
                 XY Timer
             </TimerTitle>
-            <TimerDisplay value={rounds % 2 === 0 ? 'Work' : 'Rest'} label={'Period'} />
-            <TimerDisplay value={rounds.toString()} label={'Rounds'} />
-            <TimerDisplay value={milisecondsToTime(roundDuration)} />
+            <TimerDisplay value={`${t?.rounds?.toString()}/${t?.initialRounds}`} label={'Rounds'} />
+            <TimerDisplay value={milisecondsToTime(t?.duration || 0)} />
         </Timer>
     );
 };

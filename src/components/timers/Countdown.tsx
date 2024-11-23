@@ -1,24 +1,23 @@
+import { useContext } from 'react';
 import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
+import { TimersContext } from '../context/TimersContextProvider.tsx';
 import { RemoveButton, TimerDisplay } from '../generic/TimerComps.tsx';
-import useCountdown from '../hooks/useCountdown.tsx';
 
 type CountdownProps = {
-    countdownDuration?: number;
-    refreshRate?: number;
     id: string;
 };
 
-const Countdown = ({ countdownDuration = 5000, refreshRate = 1000, id }: CountdownProps) => {
-    const { time, setTime, status, intervalRef } = useCountdown(countdownDuration);
-
+const Countdown = ({ id }: CountdownProps) => {
+    const timersContext = useContext(TimersContext);
+    const t = timersContext.timers.find(timer => timer.id === id);
     return (
         <Timer>
             <TimerTitle>
                 <RemoveButton removeId={id} />
                 Countdown
             </TimerTitle>
-            <TimerDisplay value={milisecondsToTime(time)} />
+            <TimerDisplay value={milisecondsToTime(t?.duration || 0)} />
         </Timer>
     );
 };

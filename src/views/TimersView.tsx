@@ -16,28 +16,31 @@ const TimersView = () => {
                 {timersContext.timers.map(timer => (
                     <div key={timer.id}>
                         {timer.type === 'Countdown' ? (
-                            <Countdown id={timer.id} countdownDuration={timer.duration} />
+                            <Countdown id={timer.id} />
                         ) : timer.type === 'Stopwatch' ? (
-                            <Stopwatch id={timer.id} timeLimit={timer.duration} />
+                            <Stopwatch id={timer.id} />
                         ) : timer.type === 'XY' ? (
-                            <XY id={timer.id} rounds={timer.rounds} roundDuration={timer.duration} />
+                            <XY id={timer.id} />
                         ) : timer.type === 'Tabata' ? (
-                            <Tabata id={timer.id} rounds={timer.rounds} duration={timer.duration} restDuration={timer.restDuration} />
+                            <Tabata id={timer.id} />
                         ) : null}
                     </div>
                 ))}
             </Timers>
             <ControlsDiv>
+                <TimerButton onClickParam={() => timersContext.startWorkout()} timerButtonLabel="⏯️" />
                 <TimerButton
                     onClickParam={() => {
-                        timersContext.timers.map(timer => {
-                            //console.log(timer);
-                        });
+                        timersContext.stopWorkout();
                     }}
-                    timerButtonLabel="⏯️"
+                    timerButtonLabel="⏹️"
                 />
-                <TimerButton onClickParam={() => {}} timerButtonLabel="⏹️" />
-                <TimerButton onClickParam={() => {}} timerButtonLabel="⏩" />
+                <TimerButton
+                    onClickParam={() => {
+                        timersContext.fastForward();
+                    }}
+                    timerButtonLabel="⏩"
+                />
             </ControlsDiv>
         </>
     );

@@ -10,7 +10,6 @@ const onStartStandard = (status: MutableRefObject<string>, intervalRef: MutableR
         clearInterval(intervalRef.current);
         return;
     }
-
     status.current = 'start';
     intervalRef.current = setInterval(
         () => {

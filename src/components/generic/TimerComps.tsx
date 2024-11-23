@@ -74,6 +74,7 @@ export const TimerInput = ({ setDuration, label }: TimerInputProps) => {
                 max={84400000}
                 min={1000}
                 placeholder={label}
+                defaultValue={3000}
                 onChange={event => {
                     setDuration(Number.parseInt(event.target.value));
                 }}
@@ -96,6 +97,7 @@ export const XYTimerInput = ({ setDuration, setRounds, labelDuration = 'Round Du
                 type="number"
                 max={84400000}
                 min={1000}
+                defaultValue={3000}
                 placeholder={labelDuration}
                 onChange={event => {
                     setDuration(Number.parseInt(event.target.value));
@@ -105,6 +107,7 @@ export const XYTimerInput = ({ setDuration, setRounds, labelDuration = 'Round Du
                 type="number"
                 max={100}
                 min={1}
+                defaultValue={3}
                 placeholder={labelRounds}
                 onChange={event => {
                     setRounds(Number.parseInt(event.target.value));
@@ -137,6 +140,7 @@ export const TabataTimerInput = ({
                 type="number"
                 max={84400000}
                 min={1000}
+                defaultValue={3000}
                 placeholder={labelDuration}
                 onChange={event => {
                     setDuration(Number.parseInt(event.target.value));
@@ -146,6 +150,7 @@ export const TabataTimerInput = ({
                 type="number"
                 max={84400000}
                 min={1000}
+                defaultValue={2000}
                 placeholder={labelRestDuration}
                 onChange={event => {
                     setRestDuration(Number.parseInt(event.target.value));
@@ -155,6 +160,7 @@ export const TabataTimerInput = ({
                 type="number"
                 max={100}
                 min={1}
+                defaultValue={2}
                 placeholder={labelRounds}
                 onChange={event => {
                     setRounds(Number.parseInt(event.target.value));
