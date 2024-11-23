@@ -27,8 +27,6 @@ export const TimerTitle = styled.div`
 `;
 
 export const Timer = styled.div`
-  border: 1px solid gray;
-  border-radius: 10px;
   padding: 20px;
   margin: 10px;
   font-size: 1.5rem;
