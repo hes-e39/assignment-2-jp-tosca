@@ -3,7 +3,6 @@
 
 import type { Timer } from '../components/context/TimersContextProvider';
 
-// everywhere.
 export function milisecondsToTime(miliseconds: number): string {
     const seconds = Math.floor((miliseconds / 1000) % 60);
     const minutes = Math.floor((miliseconds / (1000 * 60)) % 60);
