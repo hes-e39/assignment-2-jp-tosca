@@ -1,4 +1,4 @@
-import { type MutableRefObject, createContext, useRef, useState } from 'react';
+import { type MutableRefObject, createContext, useEffect, useRef, useState } from 'react';
 import { stopWorkout } from '../../utils/helpers';
 
 export type Timer = {
@@ -55,6 +55,18 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [timers, setTimers] = useState<Timer[]>([]);
     const [running, setRunning] = useState<Timer | Partial<Timer> | null>(null);
     const intervalRef: MutableRefObject<number | undefined> = useRef();
+    useEffect(() => {
+        if (running === null) {
+            clearInterval(intervalRef.current);
+        }
+    }, [running]);
+
+    useEffect(() => {
+        return () => {
+            clearInterval(intervalRef.current);
+        };
+    }, []);
+
     return (
         <TimersContext.Provider
             value={{
@@ -86,14 +98,15 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
 
                                 //If no timer is left to run we restart the workout.
                                 if (timerIndex === -1) {
-                                    stopWorkout(setTimers, intervalRef, setRunning);
+                                    stopWorkout(setTimers, setRunning);
                                     return prevTimers;
                                 }
 
                                 const updatedTimers = [...prevTimers];
                                 const nextTimer = { ...updatedTimers[timerIndex] };
-                                const timeIncrease = nextTimer.type === 'Stopwatch' ? 1000 : -1000;
 
+                                //We increase or decrease the time depending on the type of timer, stopwatch is the only one that goes forward in time.
+                                const timeIncrease = nextTimer.type === 'Stopwatch' ? 1000 : -1000;
                                 nextTimer.duration += timeIncrease;
 
                                 // The logic for the 4 timers is handled here.
@@ -124,13 +137,13 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
                                 return updatedTimers;
                             });
                         }, 1000);
-                        return () => clearInterval(intervalRef.current);
+                        //return () => clearInterval(intervalRef.current);
+                    } else {
+                        setRunning(null);
                     }
                 },
                 stopWorkout: () => {
-                    if (running !== null) {
-                        stopWorkout(setTimers, intervalRef, setRunning);
-                    }
+                    stopWorkout(setTimers, setRunning);
                 },
                 fastForward: () => {
                     if (running !== null) {

@@ -30,11 +30,8 @@ export function calculateRestDurationVal(restDuration: number, type: string): nu
     return restDuration === 0 ? defaultValue : restDuration;
 }
 
-export function stopWorkout(
-    setTimers: React.Dispatch<React.SetStateAction<Timer[]>>,
-    intervalRef: React.MutableRefObject<number | undefined>,
-    setRunning: React.Dispatch<React.SetStateAction<Timer | Partial<Timer> | null>>,
-): void {
+export function stopWorkout(setTimers: React.Dispatch<React.SetStateAction<Timer[]>>, setRunning: React.Dispatch<React.SetStateAction<Timer | Partial<Timer> | null>>): void {
+    setRunning(null);
     setTimers(prevTimers =>
         prevTimers.map(timer => ({
             ...timer,
@@ -44,7 +41,5 @@ export function stopWorkout(
             rounds: timer.initialRounds,
         })),
     );
-
-    clearInterval(intervalRef.current);
-    setRunning(null);
+    //clearInterval(intervalRef.current);
 }
