@@ -94,7 +94,7 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
                         intervalRef.current = setInterval(() => {
                             setTimers(prevTimers => {
                                 //We get the index ot the current timer on the array.
-                                const timerIndex = prevTimers.findIndex(timer => timer.status === 'stopped');
+                                const timerIndex = prevTimers.findIndex(timer => timer.status === 'stopped' || timer.status === 'running');
 
                                 //If no timer is left to run we restart the workout.
                                 if (timerIndex === -1) {
@@ -130,15 +130,18 @@ const TimersContextProvider = ({ children }: { children: React.ReactNode }) => {
                                     }
                                 } else if (nextTimer.type === 'Stopwatch' && nextTimer.duration >= nextTimer.initialDuration) {
                                     nextTimer.status = 'finished';
+                                } else {
+                                    nextTimer.status = 'running';
                                 }
 
                                 updatedTimers[timerIndex] = nextTimer;
+
                                 setRunning(updatedTimers[timerIndex]);
                                 return updatedTimers;
                             });
                         }, 1000);
-                        //return () => clearInterval(intervalRef.current);
                     } else {
+                        //We pause the workout.
                         setRunning(null);
                     }
                 },

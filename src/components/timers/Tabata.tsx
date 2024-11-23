@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Timer, TimerTitle } from '../../utils/Styled.tsx';
 import { milisecondsToTime } from '../../utils/helpers';
 import { TimersContext } from '../context/TimersContextProvider.tsx';
-import { RemoveButton, TimeDisplay } from '../generic/TimerComps.tsx';
+import { RemoveButton, StatusDisplay, TimeDisplay } from '../generic/TimerComps.tsx';
 
 type TabataProps = {
     id: string;
@@ -17,15 +17,17 @@ const Tabata = ({ id }: TabataProps) => {
     const roundsValue = t?.rounds !== undefined ? `${Math.ceil(t.rounds / 2).toString()}/${(t.initialRounds ?? 0) / 2}` : '0/0';
 
     return (
-        <Timer>
-            <TimerTitle>
-                <RemoveButton removeId={id} />
-                Tabata
-            </TimerTitle>
-            <TimeDisplay value={periodValue} label={'Period'} />
-            <TimeDisplay value={roundsValue} label={'Rounds'} />
-            <TimeDisplay value={milisecondsToTime(t?.duration || 0)} />
-        </Timer>
+        <StatusDisplay status={t?.status}>
+            <Timer>
+                <TimerTitle>
+                    <RemoveButton removeId={id} />
+                    Tabata
+                </TimerTitle>
+                <TimeDisplay value={periodValue} label={'Period'} />
+                <TimeDisplay value={roundsValue} label={'Rounds'} />
+                <TimeDisplay value={milisecondsToTime(t?.duration || 0)} />
+            </Timer>
+        </StatusDisplay>
     );
 };
 

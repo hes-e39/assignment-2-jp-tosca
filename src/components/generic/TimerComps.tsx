@@ -281,3 +281,9 @@ export const TimersDisplay = ({ timers }: { timers: Timer[] }) => {
         </>
     );
 };
+
+export const StatusDisplay = ({ status, children }: { status: string | undefined; children: React.ReactNode }) => {
+    const classNameColor = status === 'finished' ? 'bg-slate-800' : status === 'stopped' ? 'bg-white' : 'bg-lime-200';
+
+    return <div className={`${classNameColor} rounded-lg m-3 border-2 border-gray-800`}>{children}</div>;
+};
